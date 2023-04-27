@@ -1,40 +1,54 @@
-import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
+import { DateTime } from "luxon";
+import Category from "./Category";
+import User from "./User";
 
 export default class Blog extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: number;
 
   @column()
-  public title:string
+  public title: string;
 
   @column()
-  public content: string
+  public content: string;
 
   @column()
-  public image:string
+  public category_id: number;
 
   @column()
-  public user_id:number
+  public image: string;
 
   @column()
-  public status: status
+  public user_id: number;
+
+  @column()
+  public status: status;
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  public createdAt: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  public updatedAt: DateTime;
 
-  @belongsTo(()=>User,{
-    foreignKey:'user_id'
+  @belongsTo(() => User, {
+    foreignKey: "user_id",
   })
-  public user:BelongsTo<typeof User>
+  public user: BelongsTo<typeof User>;
+
+  @belongsTo(() => Category, {
+    foreignKey: "category_id",
+  })
+  public category: BelongsTo<typeof Category>;
+
+  // public get full_image() {
+  //   return await Drive.getUrl(this.image);
+  // }
 }
-enum status{
+
+enum status {
   draft,
   pending,
   active,
-  deactive
+  deactive,
 }
